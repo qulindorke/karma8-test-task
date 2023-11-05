@@ -2,6 +2,7 @@
 <?php
 
 // Include libraries
+includeLibrary('config');
 includeLibrary('logging');
 
 // Run command
