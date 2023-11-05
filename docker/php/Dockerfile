@@ -2,11 +2,11 @@ ARG BASE_PHP_IMAGE=php:8.1-alpine
 
 FROM $BASE_PHP_IMAGE
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql \
-    && docker-php-ext-enable pdo_mysql
+RUN set -ex \
+  && apk --no-cache add \
+    postgresql-dev
 
-# TODO: check if mysqli can be installed without installing pdo & pdo_mysql
-# TODO: add pcntl
+RUN docker-php-ext-install pdo pdo_pgsql
 
 COPY docker/php/custom.ini /usr/local/etc/php/conf.d/custom.ini
 RUN chown -R www-data:www-data /usr/local/etc/php/conf.d
@@ -15,7 +15,9 @@ WORKDIR /app
 
 COPY . .
 
-ENV DB_HOST="mysql" \
-    DB_DATABASE="testdb" \
-    DB_USERNAME="testuser" \
-    DB_PASSWORD="mysqlpassword1"
+ENV DB_HOST="postgres" \
+    DB_PORT="5432" \
+    DB_DATABASE="somedatabase" \
+    DB_USERNAME="someuser" \
+    DB_PASSWORD="somepassword"
+

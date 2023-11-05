@@ -2,8 +2,7 @@
 version: "3.8"
 
 volumes:
-  mysql:
-
+  postgres_data:
 networks:
   net:
 
@@ -15,32 +14,32 @@ services:
     user: "www-data"
     environment:
       DB_HOST: "$DB_HOST"
+      DB_PORT: "$DB_PORT"
       DB_DATABASE: "$DB_DATABASE"
-      DB_USENAME: "$DB_USERNAME"
+      DB_USERNAME: "$DB_USERNAME"
       DB_PASSWORD: "$DB_PASSWORD"
     volumes:
       - .:/app
     depends_on:
-      - mysql
+      - postgres
     networks: [net]
     command: ["php", "run", "scheduler"]
 
-  mysql:
-    image: mysql:8.0.33
+  postgres:
+    image: postgres
     environment:
-      MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
-      MYSQL_DATABASE: "$DB_DATABASE"
-      MYSQL_USER: "$DB_USERNAME"
-      MYSQL_PASSWORD: "$DB_PASSWORD"
+      POSTGRES_DB: "$DB_DATABASE"
+      POSTGRES_USER: "$DB_USERNAME"
+      POSTGRES_PASSWORD: "$DB_PASSWORD"
     healthcheck:
-      test: [ "CMD", "mysqladmin", "-uroot", "-p$$MYSQL_ROOT_PASSWORD", "ping" ]
+      test: ["CMD-SHELL", "pg_isready -U $$DB_USERNAME -d $$DB_DATABASE"]
       interval: 30s
       timeout: 5s
       retries: 3
       start_period: 5s
     ports:
-      - "33060:3306"
+      - "5432:5432"
     volumes:
-      - mysql:/var/lib/mysql
-      - "./dev-data/database-schema.sql:/dev-data/database-schema.sql"
+      - postgres_data:/var/lib/postgresql/data
+      - "./dev-data/init.sql:/docker-entrypoint-initdb.d/init.sql"
     networks: [net]
