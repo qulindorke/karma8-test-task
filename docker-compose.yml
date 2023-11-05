@@ -1,0 +1,42 @@
+version: "3.8"
+
+volumes:
+  mysql:
+
+services:
+  scheduler:
+    build:
+      dockerfile: ./docker/images/unit/Dockerfile
+      context: .
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: "polina-bot"
+      APP_KEY: "base64:HiqImlJspkRRB0au7dV9LX4aGRtg+7+TNxZHeenkg28="
+      APP_ENV: "local"
+      APP_DEBUG: "true"
+      APP_URL: "http://localhost:8080"
+      LOG_LEVEL: "debug"
+      DB_HOST: "mysql"
+      DB_DATABASE: "your_local_database"
+      DB_USERNAME: "your_local_username"
+      DB_PASSWORD: "your_local_password"
+      REDIS_HOST: "redis"
+      QUEUE_CONNECTION: "sync"
+    volumes:
+      - .:/app
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:8.0.33
+    environment:
+      MYSQL_ROOT_PASSWORD: "your_local_mysql_root_password"
+      MYSQL_DATABASE: "your_local_database"
+      MYSQL_USER: "your_local_username"
+      MYSQL_PASSWORD: "your_local_password"
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql:/var/lib/mysql

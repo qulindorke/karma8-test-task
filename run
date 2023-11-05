@@ -4,6 +4,7 @@
 // Include libraries
 includeLibrary('config');
 includeLibrary('logging');
+includeLibrary('array_helpers');
 
 // Run command
 $commandName = getCommandName();
@@ -35,13 +36,6 @@ function runCommand(string $commandName): mixed
     }
 
     return require $commandFilePath;
-}
-
-function getCommandArgs(): array
-{
-    global $argv;
-
-    return array_slice($argv, 2);
 }
 
 function getCommandName(): string
