@@ -30,7 +30,7 @@ while (true) {
         }
     }
 
-    sleep(5);
+    sleep(60);
 }
 
 function _handleDailyFrequencyPeriod(string $commandName, string $time): void
