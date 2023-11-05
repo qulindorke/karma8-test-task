@@ -28,6 +28,10 @@ function runCommand(string $commandName, ...$args): ?int
         );
     }
 
+    logMessage('debug', "Running '{$commandName}' command", [
+        'args' => $args
+    ]);
+
     $callable = require $commandFilePath;
 
     return $callable(...$args);
