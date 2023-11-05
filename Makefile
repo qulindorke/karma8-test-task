@@ -1,5 +1,5 @@
 # Variables
-DOCKER_COMPOSE = docker-compose
+DOCKER_COMPOSE = docker-compose --env-file=.env
 
 build:
 	@$(DOCKER_COMPOSE) build

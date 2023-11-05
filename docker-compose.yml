@@ -14,7 +14,10 @@ services:
       context: .
     user: "www-data"
     environment:
-      APP_NAME: "expired-subscription-notification-service"
+      DB_HOST: "$DB_HOST"
+      DB_DATABASE: "$DB_DATABASE"
+      DB_USENAME: "$DB_USERNAME"
+      DB_PASSWORD: "$DB_PASSWORD"
     volumes:
       - .:/app
     depends_on:

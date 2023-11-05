@@ -21,6 +21,10 @@ function config(string $name, mixed $default = null): mixed
 
 function _getConfigValue(array $path, array $config, mixed $default = null): mixed
 {
+    if (empty($path)) {
+        return $config;
+    }
+
     $key = array_shift($path);
 
     if (!array_key_exists($key, $config)) {

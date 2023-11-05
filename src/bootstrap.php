@@ -1,6 +1,7 @@
 <?php
 
 // Include Libraries
+includeLibrary('debug_helpers');
 includeLibrary('array_helpers');
 includeLibrary('env_helpers');
 includeLibrary('logging');
