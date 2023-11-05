@@ -9,6 +9,10 @@ CREATE TABLE users
     valid     BOOLEAN NOT NULL DEFAULT FALSE
 );
 
+-- Create a partial index
+CREATE INDEX idx_partial_confirmed_validts ON users(confirmed, validts)
+    WHERE confirmed IS TRUE AND validts <> 0;
+
 -- Function to generate a random subscription expiration date
 CREATE OR REPLACE FUNCTION random_unixtimestamp_around_now()
 RETURNS BIGINT AS $$
