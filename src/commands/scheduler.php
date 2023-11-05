@@ -13,7 +13,6 @@ while (true) {
 
         $period = $task[1] ?? null;
         if (empty($period)) {
-            // Throwing an InvalidArgumentException if period is not defined or empty.
             throw new UnexpectedValueException('Invalid task configuration: Execution frequency period is required.');
         }
 
