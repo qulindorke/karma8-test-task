@@ -25,10 +25,10 @@ services:
   mysql:
     image: mysql:8.0.33
     environment:
-      MYSQL_ROOT_PASSWORD: "your_local_mysql_root_password"
-      MYSQL_DATABASE: "your_local_database"
-      MYSQL_USER: "your_local_username"
-      MYSQL_PASSWORD: "your_local_password"
+      MYSQL_ROOT_PASSWORD: "$MYSQL_ROOT_PASSWORD"
+      MYSQL_DATABASE: "$DB_DATABASE"
+      MYSQL_USER: "$DB_USERNAME"
+      MYSQL_PASSWORD: "$DB_PASSWORD"
     ports:
       - "33060:3306"
     volumes:
