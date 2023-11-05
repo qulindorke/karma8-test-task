@@ -1,6 +1,6 @@
 <?php
 
-function logMessage(string $level, string $message, array $context = [])
+function logMessage(string $level, string $message, array $context = []): void
 {
     $errorLevels = ['error', 'critical', 'alert', 'emergency'];
 

@@ -1,6 +1,6 @@
 <?php
 
-function dump(...$args)
+function dump(...$args): void
 {
     foreach ($args as $arg) {
         echo PHP_EOL;
@@ -8,7 +8,7 @@ function dump(...$args)
     }
 }
 
-function dd(...$args)
+function dd(...$args): void
 {
     dump(...$args);
     die();
