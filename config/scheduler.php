@@ -17,6 +17,6 @@ return [
     */
 
     'tasks' => [
-        ['bulk', 'every minute'],
+        // ['bulk', 'every minute'],
     ]
 ];

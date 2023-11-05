@@ -32,6 +32,12 @@ services:
       MYSQL_DATABASE: "$DB_DATABASE"
       MYSQL_USER: "$DB_USERNAME"
       MYSQL_PASSWORD: "$DB_PASSWORD"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "-uroot", "-p$$MYSQL_ROOT_PASSWORD", "ping" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     ports:
       - "33060:3306"
     volumes:
