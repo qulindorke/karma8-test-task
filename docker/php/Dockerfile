@@ -6,6 +6,7 @@ RUN docker-php-ext-install mysqli pdo pdo_mysql \
     && docker-php-ext-enable pdo_mysql
 
 # TODO: check if mysqli can be installed without installing pdo & pdo_mysql
+# TODO: add pcntl
 
 COPY custom.ini /usr/local/etc/php/conf.d/custom.ini
 RUN chown -R www-data:www-data /usr/local/etc/php/conf.d
