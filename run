@@ -1,0 +1,57 @@
+#!/usr/bin/env php
+<?php
+
+// Include libraries
+includeLibrary('logging');
+
+// Run command
+$commandName = getCommandName();
+$exitCode = runCommand($commandName);
+$exitCode ? exit($exitCode) : exit();
+
+
+// ********* Functions ********* //
+
+function includeLibrary(string $libraryName): void
+{
+    $libFilePath = "./src/libraries/{$libraryName}.php";
+    if (!file_exists($libFilePath)) {
+        throw new RuntimeException(
+            "The required library '{$libraryName}' cannot be loaded because the file does not exist."
+        );
+    }
+
+    require_once $libFilePath;
+}
+
+function runCommand(string $commandName): mixed
+{
+    $commandFilePath = "./src/commands/{$commandName}.php";
+    if (!file_exists($commandFilePath)) {
+        throw new RuntimeException(
+            "The required command '{$commandName}' cannot be loaded because the file does not exist."
+        );
+    }
+
+    return require $commandFilePath;
+}
+
+function getCommandArgs(): array
+{
+    global $argv;
+
+    return array_slice($argv, 2);
+}
+
+function getCommandName(): string
+{
+    global $argv;
+
+    if (!isset($argv[1])) {
+        throw new RuntimeException(
+            "The required argument command name is missed."
+        );
+    }
+
+    return $argv[1];
+}
