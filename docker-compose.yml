@@ -42,4 +42,5 @@ services:
       - "33060:3306"
     volumes:
       - mysql:/var/lib/mysql
+      - "./dev-data/database-schema.sql:/dev-data/database-schema.sql"
     networks: [net]
