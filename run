@@ -3,11 +3,11 @@
 
 require_once './src/bootstrap.php';
 
-$commandName = getCommandName();
+$commandName = _getCommandName();
 $exitCode = runCommand($commandName);
-$exitCode ? exit($exitCode) : exit();
+exit($exitCode);
 
-function getCommandName(): string
+function _getCommandName(): string
 {
     global $argv;
 

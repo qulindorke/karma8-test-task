@@ -19,7 +19,7 @@ function includeLibrary(string $libraryName): void
     require_once $libFilePath;
 }
 
-function runCommand(string $commandName): mixed
+function runCommand(string $commandName, ...$args): ?int
 {
     $commandFilePath = "./src/commands/{$commandName}.php";
     if (!file_exists($commandFilePath)) {
@@ -28,5 +28,7 @@ function runCommand(string $commandName): mixed
         );
     }
 
-    return require $commandFilePath;
+    $callable = require $commandFilePath;
+
+    return $callable(...$args);
 }
