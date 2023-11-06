@@ -1,6 +1,9 @@
 #!/usr/bin/env php
 <?php
 
+const SUCCESS_EXIT_CODE = 0;
+const ERROR_EXIT_CODE = 1;
+
 require_once './src/bootstrap.php';
 
 $commandName = $argv[1] ?? exitWithMessage("The required argument command name is missed.");

@@ -10,6 +10,10 @@ function enqueueJob($connection, string $actionName, ...$parameters): void
     ];
 
     pg_insert($connection, 'job_queue', $data);
+
+    logMessage('debug', 'Job has been queued', [
+        'data' => $data
+    ]);
 }
 
 function dequeueJob($connection): ?array

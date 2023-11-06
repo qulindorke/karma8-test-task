@@ -6,6 +6,12 @@ return static function () {
     $sleepTime = 3;
 
     while (true) {
+        logMessage('debug', 'Trying to get new task from queue');
+
+        if (pg_connection_status($connection) !== PGSQL_CONNECTION_OK) {
+            pg_connection_reset($connection);
+        }
+
         $job = dequeueJob($connection);
 
         if (!$job) {
@@ -18,11 +24,19 @@ return static function () {
         $parameters = json_decode($job['parameters']);
 
         logMessage('debug', 'Running job', [
+            'job_id' => $job['id'],
             'action_name' => $actionName,
             'parameters' => $parameters
         ]);
 
-        runAction($actionName, ...$parameters);
+        try {
+            runAction($actionName, ...$parameters);
+        } catch (Throwable $throwable) {
+            failJob($connection, $job['id']);
+        }
+
+        finishJob($connection, $job['id']);
     }
-    // todo add pcntl exit and connection closing
+
+    // todo add handling pcntl turn down
 };

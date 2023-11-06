@@ -9,5 +9,5 @@ remove:
 start:
 	@$(DOCKER_COMPOSE) up -d
 
-test:
-	@$(DOCKER_COMPOSE) run --rm scheduler php run test
+check-subscriptions:
+	@$(DOCKER_COMPOSE) run --rm scheduler php run check-subscriptions

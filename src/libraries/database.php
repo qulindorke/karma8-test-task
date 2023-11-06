@@ -14,8 +14,3 @@ function getPgSqlConnection()
     }
     return $connection;
 }
-
-function closePgSqlConnection($connection)
-{
-    pg_close($connection);
-}

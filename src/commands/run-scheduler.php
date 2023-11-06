@@ -35,6 +35,8 @@ return static function () {
 
         sleep(60);
     }
+
+    // todo add handling pcntl turn down
 };
 
 function _handleDailyFrequencyPeriod(string $commandName, string $time): void

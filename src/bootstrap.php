@@ -7,7 +7,8 @@ $libraries = [
     'config',
     'database',
     'queue',
-    'mailing'
+    'mailing',
+    'users'
 ];
 
 array_walk($libraries, 'includeLibrary');
@@ -50,7 +51,7 @@ function runAction($actionName, ...$args)
     return loadAndRun('actions', $actionName, $args);
 }
 
-function exitWithMessage($message, $code = 1)
+function exitWithMessage($message, $code = ERROR_EXIT_CODE)
 {
     echo $message.PHP_EOL;
     exit($code);

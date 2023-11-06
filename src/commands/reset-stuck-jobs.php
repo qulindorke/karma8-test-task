@@ -1,7 +1,8 @@
 <?php
 
-return static function() {
+return static function(): int {
     $connection = getPgSqlConnection();
     resetStuckJobs($connection);
-    closePgSqlConnection($connection);
+
+    return SUCCESS_EXIT_CODE;
 };

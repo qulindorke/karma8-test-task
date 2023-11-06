@@ -17,6 +17,7 @@ return [
     */
 
     'tasks' => [
+        ['subscription-check', 'daily'],
         ['reset-stuck-jobs', 'every minute'],
     ]
 ];

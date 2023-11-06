@@ -7,7 +7,7 @@ networks:
   net:
 
 services:
-  queue-worker: &worker_service
+  scheduler: &worker_service
     build:
       dockerfile: ./docker/php/Dockerfile
       context: .
@@ -25,11 +25,13 @@ services:
         condition: service_healthy
     restart: unless-stopped
     networks: [net]
-    command: ["php", "run", "run-queue-worker"]
-
-  scheduler:
-    <<: *worker_service
     command: ["php", "run", "run-scheduler"]
+
+  queue-worker:
+    <<: *worker_service
+    deploy:
+      replicas: 2
+    command: ["php", "run", "run-queue-worker"]
 
   postgres:
     image: postgres
