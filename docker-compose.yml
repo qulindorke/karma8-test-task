@@ -7,7 +7,7 @@ networks:
   net:
 
 services:
-  scheduler: &php_service
+  queue-worker: &worker_service
     build:
       dockerfile: ./docker/php/Dockerfile
       context: .
@@ -21,9 +21,15 @@ services:
     volumes:
       - .:/app
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
     networks: [net]
-    command: ["php", "run", "scheduler"]
+    command: ["php", "run", "run-queue-worker"]
+
+  scheduler:
+    <<: *worker_service
+    command: ["php", "run", "run-scheduler"]
 
   postgres:
     image: postgres
@@ -32,11 +38,11 @@ services:
       POSTGRES_USER: "$DB_USERNAME"
       POSTGRES_PASSWORD: "$DB_PASSWORD"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $$DB_USERNAME -d $$DB_DATABASE"]
-      interval: 30s
+      test: [ "CMD-SHELL", "pg_isready -U $$DB_USERNAME -d $$DB_DATABASE" ]
+      interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 5s
+      retries: 5
+      start_period: 10s
     ports:
       - "5432:5432"
     volumes:

@@ -1,3 +1,4 @@
+-- Creating users table
 CREATE TABLE users
 (
     id        SERIAL PRIMARY KEY,
@@ -9,9 +10,23 @@ CREATE TABLE users
     valid     BOOLEAN NOT NULL DEFAULT FALSE
 );
 
--- Create a partial index
 CREATE INDEX idx_partial_confirmed_validts ON users(confirmed, validts)
     WHERE confirmed IS TRUE AND validts <> 0;
+
+-- Creating queue table
+CREATE TYPE job_status AS ENUM ('pending', 'processing', 'failed');
+
+CREATE TABLE job_queue
+(
+    id           SERIAL PRIMARY KEY,
+    action_name VARCHAR(255) NOT NULL,
+    parameters   JSON         NOT NULL,
+    status       job_status   NOT NULL,
+    created_at   TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    started_at   TIMESTAMP WITH TIME ZONE DEFAULT NULL
+);
+
+CREATE INDEX idx_job_queue_status_created_at ON job_queue (status, created_at);
 
 -- Function to generate a random subscription expiration date
 CREATE OR REPLACE FUNCTION random_unixtimestamp_around_now()
@@ -55,7 +70,7 @@ i INTEGER;
     v_confirmed BOOLEAN;
     v_checked BOOLEAN;
     v_valid BOOLEAN;
-    num_users CONSTANT INTEGER := 1000000; -- The number of users to generate
+    num_users CONSTANT INTEGER := 10000; -- The number of users to generate
 BEGIN
     RAISE NOTICE 'Generating % users', num_users;
 

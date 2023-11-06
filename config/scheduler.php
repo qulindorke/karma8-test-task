@@ -17,6 +17,6 @@ return [
     */
 
     'tasks' => [
-        // ['bulk', 'every minute'],
+        ['reset-stuck-jobs', 'every minute'],
     ]
 ];

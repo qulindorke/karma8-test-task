@@ -1,13 +1,21 @@
 <?php
 
-// Include Libraries
+$libraries = [
+    'debug_helpers',
+    'env_helpers',
+    'logging',
+    'config',
+    'database',
+    'queue'
+];
 
-includeLibrary('debug_helpers');
-includeLibrary('env_helpers');
-includeLibrary('logging');
-includeLibrary('config');
+array_walk($libraries, 'includeLibrary');
 
-function includeLibrary(string $libraryName): void
+/***********************************
+ * CORE FUNCTIONS
+ ***********************************/
+
+function includeLibrary($libraryName): void
 {
     $libFilePath = "./src/libraries/{$libraryName}.php";
     if (!file_exists($libFilePath)) {
@@ -17,24 +25,32 @@ function includeLibrary(string $libraryName): void
     require_once $libFilePath;
 }
 
-function runCommand(string $commandName, ...$args): ?int
+function loadAndRun($type, $name, $args = [])
 {
-    $commandFilePath = "./src/commands/{$commandName}.php";
-    if (!file_exists($commandFilePath)) {
-        exitWithMessage("The required command '{$commandName}' cannot be loaded because the file does not exist.");
+    $filePath = "./src/{$type}/{$name}.php";
+    if (!file_exists($filePath)) {
+        exitWithMessage("The required {$type} '{$name}' cannot be loaded because the file does not exist.");
     }
 
-    logMessage('debug', "Running '{$commandName}' command", [
-        'args' => $args
-    ]);
+    logMessage('debug', "Running '{$name}' {$type}", ['args' => $args]);
 
-    $callable = require $commandFilePath;
+    $callable = require $filePath;
 
     return $callable(...$args);
 }
 
-function exitWithMessage(string $message, int $code = 1): void
+function runCommand($commandName, ...$args)
 {
-    echo $message;
+    return loadAndRun('commands', $commandName, $args);
+}
+
+function runAction($actionName, ...$args)
+{
+    return loadAndRun('actions', $actionName, $args);
+}
+
+function exitWithMessage($message, $code = 1)
+{
+    echo $message.PHP_EOL;
     exit($code);
 }
