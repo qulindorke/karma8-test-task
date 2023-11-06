@@ -38,5 +38,5 @@ return static function () {
         finishJob($connection, $job['id']);
     }
 
-    // todo add handling pcntl turn down
+    // @todo we should run job in processes to control execution time
 };
