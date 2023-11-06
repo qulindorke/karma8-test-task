@@ -15,8 +15,7 @@ return static function (): int {
 
     $result = pg_query($connection, $select);
     if (!$result) {
-        echo "An error occurred.\n";
-        exit;
+        exitWithMessage('An error occurred when making query to db');
     }
 
     $usersWithExpiringSubscriptions = pg_fetch_all($result);
