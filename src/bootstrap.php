@@ -6,7 +6,8 @@ $libraries = [
     'logging',
     'config',
     'database',
-    'queue'
+    'queue',
+    'mailing'
 ];
 
 array_walk($libraries, 'includeLibrary');

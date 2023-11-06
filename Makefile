@@ -8,3 +8,6 @@ remove:
 
 start:
 	@$(DOCKER_COMPOSE) up -d
+
+test:
+	@$(DOCKER_COMPOSE) run --rm scheduler php run test
