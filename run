@@ -3,19 +3,6 @@
 
 require_once './src/bootstrap.php';
 
-$commandName = _getCommandName();
-$exitCode = runCommand($commandName);
-exit($exitCode);
-
-function _getCommandName(): string
-{
-    global $argv;
-
-    if (!isset($argv[1])) {
-        throw new RuntimeException(
-            "The required argument command name is missed."
-        );
-    }
-
-    return $argv[1];
-}
+$commandName = $argv[1] ?? exitWithMessage("The required argument command name is missed.");
+runCommand($commandName);
+exit(0);
